@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/owner-inventory";
+const API = "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/owner-inventory";
 
 export const getOwnerInventory = async (franchiseId) => {
   console.log("📤 Fetching owner inventory for franchiseId:", franchiseId);

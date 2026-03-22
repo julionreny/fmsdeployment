@@ -4,7 +4,7 @@ import axios from "axios";
    AXIOS INSTANCE
 ========================= */
 const API = axios.create({
-  baseURL: "http://https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/branches",
+  baseURL: "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/branches",
   headers: {
     "Content-Type": "application/json"
   }

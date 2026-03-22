@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/expenses";
+const API_URL = "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/expenses";
 
 /* ===============================
    ✅ Get expenses by branch

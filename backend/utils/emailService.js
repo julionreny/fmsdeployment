@@ -38,7 +38,7 @@ const sendManagerInviteEmail = async (toEmail, inviteCode, branchName) => {
       <div style="font-size: 24px; font-weight: bold; background: #f1f5f9; padding: 10px; display: inline-block; border-radius: 5px; margin: 10px 0;">
         ${inviteCode}
       </div>
-      <p>You can register here: <a href="http://localhost:5173/register/manager">Register as Manager</a></p>
+      <p>You can register here: <a href="https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/register/manager">Register as Manager</a></p>
       <p>If you have any questions, please contact your franchise owner.</p>
     `,
   });

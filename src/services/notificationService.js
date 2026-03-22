@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/notifications";
+const API = "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/notifications";
 
 export const getNotifications = (branchId) =>
   axios.get(`${API}/${branchId}`);
@@ -14,4 +14,4 @@ export const deleteNotification = (id) =>
   axios.delete(`${API}/${id}`);
 
 export const getOwnerNotifications = (franchiseId) =>
-  axios.get(`http://https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/notifications/owner/${franchiseId}`);
+  axios.get(`https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/notifications/owner/${franchiseId}`);
