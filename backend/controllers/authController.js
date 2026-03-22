@@ -211,24 +211,40 @@ exports.loginUser = async (req, res) => {
     if (!req.body || !req.body.email || !req.body.password) {
       return res.status(400).json({ message: "Email and password are required" });
     }
+
     const email = req.body.email.toLowerCase().trim();
     const { password } = req.body;
+
+    console.log("🔵 LOGIN TRY:", email);
+
+    // IMPORTANT → force lowercase match
     const userRes = await pool.query(
-      "SELECT * FROM users WHERE email=$1",
+      "SELECT * FROM users WHERE LOWER(email)=LOWER($1)",
       [email]
     );
 
-    if (userRes.rows.length === 0)
+    console.log("🟢 DB RESULT:", userRes.rows);
+
+    if (userRes.rows.length === 0) {
+      console.log("❌ USER NOT FOUND");
       return res.status(401).json({ message: "Invalid email or password" });
+    }
 
     const user = userRes.rows[0];
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(401).json({ message: "Invalid email or password" });
+    console.log("🟡 HASH FROM DB:", user.password);
 
-    // For owners, fetch their franchise_id
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    console.log("🟣 PASSWORD MATCH:", isMatch);
+
+    if (!isMatch) {
+      console.log("❌ PASSWORD WRONG");
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
     let franchise_id = null;
+
     if (user.role_id === 1) {
       const franchiseRes = await pool.query(
         "SELECT franchise_id FROM franchises WHERE owner_id=$1",
@@ -240,17 +256,20 @@ exports.loginUser = async (req, res) => {
       }
     }
 
+    console.log("✅ LOGIN SUCCESS");
+
     res.json({
       message: "Login successful",
       user: {
         user_id: user.user_id,
         role_id: user.role_id,
         branch_id: user.branch_id,
-        franchise_id: franchise_id
+        franchise_id
       }
     });
+
   } catch (err) {
-    console.error("LOGIN ERROR:", err);
+    console.error("🔥 LOGIN ERROR:", err);
     res.status(500).json({ message: "Login failed" });
   }
 };
