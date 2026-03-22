@@ -1,14 +1,11 @@
 const express = require("express");
-
+const path = require("path");
 const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
 
-/* =========================
-   CORS (MUST COME FIRST)
-========================= */
-
+/* ================= CORS ================= */
 app.use(
   cors({
     origin: true,
@@ -16,61 +13,38 @@ app.use(
   })
 );
 
-/* =========================
-   BODY PARSER
-========================= */
-
+/* ================= BODY ================= */
 app.use(express.json());
 
-/* =========================
-   ROUTES IMPORT
-========================= */
+/* ================= API ROUTES ================= */
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/branches", require("./routes/branchRoutes"));
+app.use("/api/franchises", require("./routes/franchiseRoutes"));
+app.use("/api/expenses", require("./routes/expenseRoutes"));
+app.use("/api/employees", require("./routes/employeeRoutes"));
+app.use("/api/inventory", require("./routes/inventoryRoutes"));
+app.use("/api/sales", require("./routes/salesRoutes"));
+app.use("/api/notifications", require("./routes/notificationRoutes"));
+app.use("/api/dashboard", require("./routes/dashboardRoutes"));
+app.use("/api/owner-expenses", require("./routes/ownerExpenseRoutes"));
+app.use("/api/owner-inventory", require("./routes/ownerInventoryRoutes"));
+app.use("/api/owner-sales", require("./routes/ownerSalesRoutes"));
 
-const authRoutes = require("./routes/authRoutes");
-const branchRoutes = require("./routes/branchRoutes");
-const franchiseRoutes = require("./routes/franchiseRoutes");
-const expenseRoutes = require("./routes/expenseRoutes");
-const employeeRoutes = require("./routes/employeeRoutes");
-const inventoryRoutes = require("./routes/inventoryRoutes");
-const salesRoutes = require("./routes/salesRoutes");
-const notificationRoutes = require("./routes/notificationRoutes");
-const dashboardRoutes = require("./routes/dashboardRoutes");
-const ownerExpenseRoutes = require("./routes/ownerExpenseRoutes");
-const ownerInventoryRoutes = require("./routes/ownerInventoryRoutes");
-const ownerSalesRoutes = require("./routes/ownerSalesRoutes");
-const priorityRoutes = require("./routes/priorityRoutes");
+/* ================= FRONTEND ================= */
 
+const frontendPath = path.join(__dirname, "..", "dist");
 
+app.use(express.static(frontendPath));
 
+/* ⭐ VERY IMPORTANT FIX FOR EXPRESS 5 */
+app.use((req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 
-
-
-/* =========================
-   ROUTES USE
-========================= */
-
-app.use("/api/ml", priorityRoutes);
-
-app.use("/api/auth", authRoutes);
-app.use("/api/branches", branchRoutes);
-app.use("/api/franchises", franchiseRoutes);
-app.use("/api/expenses", expenseRoutes);
-app.use("/api/employees", employeeRoutes);
-app.use("/api/inventory", inventoryRoutes);
-app.use("/api/sales", salesRoutes);
-app.use("/api/owner-expenses", ownerExpenseRoutes);
-app.use("/api/owner-inventory", ownerInventoryRoutes);
-app.use("/api/owner-sales", ownerSalesRoutes);
-app.use("/api/notifications", notificationRoutes);
-
-app.use("/api/dashboard", dashboardRoutes);
-
-/* =========================
-   SERVER START
-========================= */
+/* ================= SERVER ================= */
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Backend running on port ${PORT}`);
+  console.log("✅ Backend running on port", PORT);
 });

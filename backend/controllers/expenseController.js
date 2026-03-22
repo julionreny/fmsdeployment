@@ -1,5 +1,6 @@
 const db = require("../config/db");
-const axios = require("axios");
+const { spawnSync } = require("child_process");
+const path = require("path");
 
 
 /* ======================================
@@ -10,7 +11,6 @@ exports.getExpensesByBranch = async (req, res) => {
   const { month } = req.query;
 
   try {
-
     let query = `
       SELECT *
       FROM expenses
@@ -30,7 +30,6 @@ exports.getExpensesByBranch = async (req, res) => {
       values.push(year, mon);
     }
 
-    /* ⭐ PRIORITY SORTING (VERY IMPORTANT) */
     query += `
       ORDER BY
         CASE
@@ -67,31 +66,44 @@ exports.addExpense = async (req, res) => {
 
   try {
 
-    /* ⭐ CREATE FULL TEXT FOR ML */
     const mlText = `${expense_type} ${description || ""}`;
-
-    let priority = "medium";   // ⭐ fallback priority
+    let priority = "medium";
 
     try {
 
-      /* ⭐ CALL ML SERVER */
-      const mlResponse = await axios.post(
-        "http://127.0.0.1:5002/predict-priority",
-        { text: mlText }
+      console.log("Calling ML with:", mlText);
+
+      const pythonPath = path.join(__dirname, "../ml/priority_api.py");
+
+      const pythonProcess = spawnSync(
+        "python",
+        [pythonPath, mlText],
+        {
+          encoding: "utf-8",
+          timeout: 10000
+        }
       );
 
-      priority = mlResponse.data.priority;
+      if (pythonProcess.error) {
+        console.log("ML Process Error:", pythonProcess.error.message);
+      }
 
-      console.log("ML Priority:", priority);
+      if (pythonProcess.stderr) {
+        console.log("ML stderr:", pythonProcess.stderr);
+      }
+
+      const output = pythonProcess.stdout?.trim();
+
+      if (output && ["high", "medium", "low"].includes(output)) {
+        priority = output;
+      }
+
+      console.log("ML Priority Result:", priority);
 
     } catch (mlError) {
-
-      /* ⭐ IF ML SERVER DOWN — SYSTEM STILL WORKS */
-      console.log("ML server error — using default priority");
-
+      console.log("ML FAILED — using fallback priority");
     }
 
-    /* ⭐ INSERT EXPENSE */
     const result = await db.query(
       `
       INSERT INTO expenses
@@ -109,7 +121,6 @@ exports.addExpense = async (req, res) => {
       ]
     );
 
-    /* ⭐ OWNER NOTIFICATION */
     await db.query(
       `
       INSERT INTO notifications
