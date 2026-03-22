@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/auth",
+  baseURL: "https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/auth",
 });
 
 export const sendOwnerOtp = (email) =>
