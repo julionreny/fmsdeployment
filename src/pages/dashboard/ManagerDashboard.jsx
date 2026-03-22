@@ -60,7 +60,7 @@ const ManagerDashboard = () => {
   const fetchSummary = async () => {
     try {
       const res = await axios.get(
-        `https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/dashboard/summary/${branchId}`
+        `https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/dashboard/summary/${branchId}`
       );
       setSummary(res.data);
     } catch (err) {
@@ -71,7 +71,7 @@ const ManagerDashboard = () => {
   const fetchSalesChart = async () => {
     try {
       const res = await axios.get(
-        `https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/dashboard/sales-last-7-days/${branchId}`
+        `https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/dashboard/sales-last-7-days/${branchId}`
       );
       setSalesData(res.data);
     } catch (err) {
@@ -82,7 +82,7 @@ const ManagerDashboard = () => {
   const fetchExpenseBreakdown = async () => {
     try {
       const res = await axios.get(
-        `https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/dashboard/expense-breakdown/${branchId}`
+        `https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/dashboard/expense-breakdown/${branchId}`
       );
       setExpenseData(res.data);
     } catch (err) {
@@ -113,7 +113,7 @@ const ManagerDashboard = () => {
       };
 
       const res = await axios.post(
-        "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/ml/predict-demand",
+        "https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/ml/predict-demand",
         body
       );
 
