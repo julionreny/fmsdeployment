@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/sales";
+const API = "http://https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/sales";
 
 export const getSalesByBranch = async (branchId, month) => {
   const res = await axios.get(`${API}/${branchId}`, {

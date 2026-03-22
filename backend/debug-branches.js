@@ -32,7 +32,7 @@ async function testBranchesAPI() {
       
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/branches/franchise/${testFranchiseId}`
+          `http://https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/branches/franchise/${testFranchiseId}`
         );
         console.log(`✅ API Response:`, response.data);
       } catch (apiErr) {
