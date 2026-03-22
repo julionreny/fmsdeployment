@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/inventory";
+const API = "https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/inventory";
 
 
 /* =========================

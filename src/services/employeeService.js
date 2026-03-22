@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/employees";
+const API = "https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/employees";
 
 export const getEmployees = (branchId) =>
   axios.get(`${API}/${branchId}`);

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/owner-expenses";
+const API = "https://franchise-backend-e7hgd6fmfugjdyhn.westeurope-01.azurewebsites.net/api/owner-expenses";
 
 
 export const getOwnerExpenses = async (franchiseId) => {
