@@ -18,7 +18,8 @@ import {
   FiRefreshCw,
   FiMoreVertical,
   FiTrash2,
-  FiRefreshCcw
+  FiRefreshCcw,
+  FiX
 } from "react-icons/fi";
 
 import "./OwnerAddOns.css";
@@ -30,6 +31,14 @@ const BranchManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeMenu, setActiveMenu] = useState(null);
+
+  /* ⭐ MODAL STATE */
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    branch_name: "",
+    location: "",
+    manager_email: ""
+  });
 
   const user = JSON.parse(localStorage.getItem("user"));
   const franchiseId = user?.franchise_id;
@@ -86,6 +95,28 @@ const BranchManagement = () => {
     fetchBranches();
   };
 
+  /* ⭐ CREATE BRANCH */
+  const handleCreateBranch = async () => {
+    try {
+      await createBranch({
+        ...formData,
+        franchise_id: franchiseId
+      });
+
+      setShowModal(false);
+      setFormData({
+        branch_name: "",
+        location: "",
+        manager_email: ""
+      });
+
+      fetchBranches();
+    } catch (err) {
+      alert("Failed to create branch");
+      console.log(err);
+    }
+  };
+
   /* ================= UI ================= */
 
   return (
@@ -93,7 +124,7 @@ const BranchManagement = () => {
 
       <div className="addon-header">
         <h1>🏢 Branch Management</h1>
-        <button className="addon-btn">
+        <button className="addon-btn" onClick={() => setShowModal(true)}>
           <FiPlus /> Add Branch
         </button>
       </div>
@@ -145,29 +176,9 @@ const BranchManagement = () => {
               }
             </div>
 
-            <div className="branch-stats-mini">
-              <div className="stat-item">
-                <span>Revenue</span>
-                <strong>₹{Number(b.revenue || 0).toLocaleString()}</strong>
-              </div>
-              <div className="stat-item">
-                <span>Profit</span>
-                <strong style={{
-                  color: (b.revenue - b.expenses) >= 0 ? "#10b981" : "#ef4444"
-                }}>
-                  ₹{Number((b.revenue || 0) - (b.expenses || 0)).toLocaleString()}
-                </strong>
-              </div>
-            </div>
-
             <div className="branch-actions">
 
-              <button className="action-btn-icon">
-                <FiEdit3 />
-              </button>
-
               <div className="branch-options">
-
                 <button
                   className="action-btn-icon"
                   onClick={(e) => {
@@ -181,10 +192,7 @@ const BranchManagement = () => {
                 </button>
 
                 {activeMenu === b.branch_id && (
-                  <div
-                    className="options-dropdown"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <div className="options-dropdown">
                     {!b.manager_id &&
                       <button onClick={() => handleResetInvite(b.branch_id)}>
                         <FiRefreshCcw /> Reset Invite
@@ -209,6 +217,60 @@ const BranchManagement = () => {
         ))}
 
       </div>
+
+      {/* ⭐⭐⭐ ADD BRANCH MODAL ⭐⭐⭐ */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content glass-card">
+
+            <div style={{display:"flex",justifyContent:"space-between"}}>
+              <h2 className="modal-title">Add Branch</h2>
+              <FiX
+                style={{cursor:"pointer"}}
+                onClick={() => setShowModal(false)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Branch Name</label>
+              <input
+                className="modal-input"
+                value={formData.branch_name}
+                onChange={(e)=>setFormData({...formData,branch_name:e.target.value})}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Location</label>
+              <input
+                className="modal-input"
+                value={formData.location}
+                onChange={(e)=>setFormData({...formData,location:e.target.value})}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Manager Email</label>
+              <input
+                className="modal-input"
+                value={formData.manager_email}
+                onChange={(e)=>setFormData({...formData,manager_email:e.target.value})}
+              />
+            </div>
+
+            <div className="modal-footer">
+              <button className="btn-secondary" onClick={()=>setShowModal(false)}>
+                Cancel
+              </button>
+
+              <button className="addon-btn" onClick={handleCreateBranch}>
+                Create Branch
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );
